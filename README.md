@@ -2,6 +2,9 @@
 
 A 3D detective game built with Three.js where you interrogate suspects to solve a murder case.
 
+## Live demo
+https://video-game-l2hsfl1hh-jazzy-purports-projects.vercel.app/
+
 ## Features
 
 - 3D interrogation room with realistic cinderblock walls and one-way mirror
