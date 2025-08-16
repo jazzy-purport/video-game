@@ -200,7 +200,7 @@ Respond in character as ${character.name}. Put spoken dialogue in the message fi
             knowledgeSection += '\n';
         }
 
-        knowledgeSection += 'IMPORTANT: Only reveal information naturally when asked relevant questions. Don\'t volunteer everything at once. If a user requests information that isn\'t in the knowledge provided for the character, say idk.\n';
+        knowledgeSection += 'IMPORTANT: Only reveal information naturally when asked relevant questions. Don\'t volunteer everything at once. If a user requests information that isn\'t in the knowledge provided for the character, say idk. DO NOT CONFESS if not presented with evidence.\n';
 
         return knowledgeSection;
     }
@@ -221,9 +221,9 @@ Respond in character as ${character.name}. Put spoken dialogue in the message fi
             const contradictions = this.detectContradictions(conversationHistory);
             const evidence = this.detectEvidenceConfrontation(conversationHistory);
             
-            if (contradictions > 1 || evidence) {
-                contextPrompt += '\nIMPORTANT: You are feeling the weight of evidence against you. If confronted with strong contradictions or evidence, go ahead and confess.\n';
-            }
+            //if (contradictions > 1 || evidence) {
+                contextPrompt += '\nIMPORTANT: You are feeling the weight of evidence against you. If confronted with strong contradictions or evidence in the message, go ahead and confess.\n';
+            //}
         }
 
         return contextPrompt;

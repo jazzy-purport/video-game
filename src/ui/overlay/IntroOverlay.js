@@ -67,7 +67,8 @@ class IntroOverlay {
                 <strong>Victoria Sterling</strong>, renowned art gallery owner, was found dead in her private office during the opening night of her latest exhibition.
             </p>
             <p style="margin: 0 0 20px 0;">
-                The cause of death: <strong style="color: #ff6666;">Aconitine poisoning</strong> - a deadly toxin extracted from wolfsbane plants.
+                The cause of death: <strong style="color: #ff6666;">Aconitine poisoning</strong> - a deadly toxin extracted from wolfsbane plants. 
+                Word of her poisoning has spread, but the specifics of the poisoning agent have not been made public.
             </p>
             <p style="margin: 0 0 20px 0;">
                 After extensive investigation, we've narrowed it down to <strong style="color: #66ff66;">three prime suspects</strong> who had means, motive, and opportunity.

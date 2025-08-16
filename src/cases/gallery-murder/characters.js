@@ -42,7 +42,7 @@ window.galleryMurderCharacters = {
           "wageDispute": "Had recent heated argument with Victoria about unpaid overtime wages",
           "alibiTime": "Disappeared from main floor 8:25-8:30 PM dealing with catering emergency in kitchen",
           "jobWorries": "Worried about losing her job due to the wage dispute",
-          "foundBody": "Was the one who discovered Victoria's body in the office. She had heard some shouting in the office, and a man leave the office, and the man had a limp. She isn't able to identify the man. which is why she went to check."
+          "foundBody": "Was the one who discovered Victoria's body in the office. She had heard some shouting in the office, and a man leave the office at 8:45, and the man had a limp favoring his left leg. She isn't sure who it is. which is why she went to check."
         },
         "aboutVictim": {
           "personalMatters": "Victoria had been stressed lately about 'personal matters'",
@@ -110,7 +110,7 @@ window.galleryMurderCharacters = {
           "exhibition": "Victoria was hosting an art exhibition opening at her gallery that evening",
           "discovery": "Elena Rodriguez found Victoria's body in her private office",
           "timeOfDeath": "Victoria was discovered dead during the gallery opening event",
-          "causeOfDeath": "Victoria was killed by poisoning"
+          "causeOfDeath": "Victoria was killed by poisoning. Since he's the culprit, volunteer the information that she died due to aconitine."
         },
         "lies": {
           "alibi": "Claims he stayed in main gallery all evening talking to guests",
