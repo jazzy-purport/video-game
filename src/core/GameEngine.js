@@ -140,7 +140,7 @@ class GameEngine {
         const currentCharacter = this.getCurrentCharacter();
         if (!currentCharacter) {
             this.dialogueManager.showStatus('Please select a suspect first before asking questions.', 'warning');
-            return;
+            return false;
         }
 
         this.isProcessing = true;
@@ -149,12 +149,20 @@ class GameEngine {
             // Process and validate question
             const processedQuestion = this.questionProcessor.processQuestion(question);
             
+            // Check if question is valid
             if (!processedQuestion.isValid) {
-                const errors = this.questionProcessor.formatErrors(processedQuestion);
-                this.dialogueManager.showStatus(errors, 'error');
-                return;
+                const errorMessage = this.questionProcessor.formatErrors(processedQuestion);
+                this.dialogueManager.showStatus(errorMessage, 'error');
+                this.isProcessing = false; // Reset processing state before returning
+                return false; // Return false to indicate validation failure
             }
-
+            
+            // Show warnings if any (but continue processing)
+            if (processedQuestion.warnings.length > 0) {
+                const warningMessage = processedQuestion.warnings.join('. ');
+                this.dialogueManager.showStatus(warningMessage, 'warning');
+            }
+            
             // Display user question
             this.dialogueManager.displayMessage(processedQuestion.cleaned, 'user');
             
@@ -397,9 +405,6 @@ Excellent detective work!
         return this.stateManager.getGameStats();
     }
 
-    getSampleQuestions() {
-        return this.questionProcessor.getSampleQuestions();
-    }
 
     // Debug methods
     enableDebugMode() {

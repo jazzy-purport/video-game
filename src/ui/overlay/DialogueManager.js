@@ -164,11 +164,13 @@ class DialogueManager {
 
         try {
             // Submit question to game engine
-            await this.gameEngine.askQuestion(question);
+            const success = await this.gameEngine.askQuestion(question);
             
-            // Clear input
-            this.elements.questionInput.value = '';
-            this.showStatus('', '');
+            // Only clear input and status if question was processed successfully
+            if (success !== false) {
+                this.elements.questionInput.value = '';
+                this.showStatus('', '');
+            }
             
         } catch (error) {
             console.error('Error submitting question:', error);
@@ -272,12 +274,22 @@ class DialogueManager {
         if (type === 'warning') color = '#ffa500';
 
         this.elements.statusDisplay.style.color = color;
-        this.elements.statusDisplay.textContent = message;
+        
+        // Handle multi-line messages
+        if (message.includes('\n')) {
+            this.elements.statusDisplay.innerHTML = message
+                .split('\n')
+                .map(line => line.trim())
+                .filter(line => line.length > 0)
+                .join('<br>');
+        } else {
+            this.elements.statusDisplay.textContent = message;
+        }
 
         // Auto-clear status after a few seconds
         if (message && type !== 'error') {
             setTimeout(() => {
-                if (this.elements.statusDisplay.textContent === message) {
+                if (this.elements.statusDisplay.innerHTML === message || this.elements.statusDisplay.textContent === message) {
                     this.elements.statusDisplay.textContent = '';
                 }
             }, 3000);

@@ -34,7 +34,8 @@ window.galleryMurderCharacters = {
           "exhibition": "Victoria was hosting an art exhibition opening at her gallery that evening",
           "discovery": "Elena Rodriguez found Victoria's body in her private office",
           "timeOfDeath": "Victoria was discovered dead during the gallery opening event",
-          "causeOfDeath": "Victoria was killed by poisoning"
+          "causeOfDeath": "Victoria was killed by poisoning",
+          "incidental": "Victoria was at the gallery the entire time but retired to her office at 8:35"
         },
         "aboutSelf": {
           "managingEvent": "Was managing the gallery opening event all evening",
@@ -185,7 +186,8 @@ window.galleryMurderCharacters = {
           "exhibition": "Victoria was hosting an art exhibition opening at her gallery that evening",
           "discovery": "Elena Rodriguez found Victoria's body in her private office",
           "timeOfDeath": "Victoria was discovered dead during the gallery opening event",
-          "causeOfDeath": "Victoria was killed by poisoning"
+          "causeOfDeath": "Victoria was killed by poisoning",
+          "incidental": "Victoria was at the gallery the entire time but retired to her office at 8:35"
         },
         "aboutSelf": {
           "threats": "Admits to making threats but claims they were 'just business frustration'",

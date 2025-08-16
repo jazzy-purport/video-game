@@ -2,12 +2,6 @@ class QuestionProcessor {
     constructor() {
         this.minQuestionLength = 3;
         this.maxQuestionLength = 500;
-        this.bannedWords = ['fuck', 'shit', 'damn']; // Basic profanity filter
-        this.questionPatterns = {
-            question: /\?$/,
-            statement: /[.!]$/,
-            incomplete: /[^.!?]$/
-        };
     }
 
     processQuestion(input) {
@@ -17,7 +11,6 @@ class QuestionProcessor {
             isValid: false,
             errors: [],
             warnings: [],
-            type: this.determineQuestionType(input),
             suggestions: []
         };
 
@@ -26,6 +19,12 @@ class QuestionProcessor {
         
         // Add suggestions if needed
         this.addSuggestions(processed);
+
+        console.log('QuestionProcessor result:', {
+            cleaned: processed.cleaned,
+            isValid: processed.isValid,
+            errors: processed.errors
+        });
 
         return processed;
     }
@@ -44,10 +43,6 @@ class QuestionProcessor {
             cleaned = cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
         }
         
-        // Add question mark if it looks like a question but doesn't have one
-        if (this.looksLikeQuestion(cleaned) && !cleaned.endsWith('?')) {
-            cleaned += '?';
-        }
         
         return cleaned;
     }
@@ -70,80 +65,14 @@ class QuestionProcessor {
             processed.errors.push(`Question too long (maximum ${this.maxQuestionLength} characters)`);
         }
 
-        // Check for profanity
-        const profanityFound = this.checkProfanity(input);
-        if (profanityFound.length > 0) {
-            processed.errors.push(`Please keep questions professional (found: ${profanityFound.join(', ')})`);
-        }
-
-        // Check for potentially problematic content
-        this.checkContent(processed);
 
         // Mark as valid if no errors
         processed.isValid = processed.errors.length === 0;
     }
 
-    checkProfanity(input) {
-        const inputLower = input.toLowerCase();
-        return this.bannedWords.filter(word => inputLower.includes(word));
-    }
 
-    checkContent(processed) {
-        const input = processed.cleaned.toLowerCase();
-        
-        // Check for non-investigative content
-        const inappropriatePatterns = [
-            { pattern: /what.*time.*is.*it/i, message: 'Focus on the investigation rather than asking about time' },
-            { pattern: /how.*are.*you/i, message: 'This is an interrogation, focus on case-related questions' },
-            { pattern: /nice.*weather/i, message: 'Stay focused on the murder investigation' }
-        ];
 
-        inappropriatePatterns.forEach(({ pattern, message }) => {
-            if (pattern.test(input)) {
-                processed.warnings.push(message);
-            }
-        });
 
-        // Check for good investigative patterns
-        const goodPatterns = [
-            /where.*were.*you/i,
-            /what.*did.*you.*see/i,
-            /who.*was.*with/i,
-            /when.*did.*you/i,
-            /how.*do.*you.*know/i,
-            /why.*would/i,
-            /can.*you.*explain/i,
-            /tell.*me.*about/i
-        ];
-
-        const hasGoodPattern = goodPatterns.some(pattern => pattern.test(input));
-        if (!hasGoodPattern && processed.warnings.length === 0) {
-            processed.warnings.push('Consider asking more specific investigative questions');
-        }
-    }
-
-    determineQuestionType(input) {
-        const inputLower = input.toLowerCase();
-        
-        if (inputLower.startsWith('where')) return 'location';
-        if (inputLower.startsWith('when')) return 'time';
-        if (inputLower.startsWith('who')) return 'person';
-        if (inputLower.startsWith('what')) return 'description';
-        if (inputLower.startsWith('why')) return 'motive';
-        if (inputLower.startsWith('how')) return 'method';
-        if (inputLower.startsWith('did you') || inputLower.startsWith('have you')) return 'confirmation';
-        if (inputLower.startsWith('can you') || inputLower.startsWith('could you')) return 'request';
-        if (inputLower.startsWith('tell me')) return 'narrative';
-        
-        return 'general';
-    }
-
-    looksLikeQuestion(input) {
-        const questionWords = ['what', 'where', 'when', 'who', 'why', 'how', 'did', 'do', 'does', 'can', 'could', 'would', 'will', 'is', 'are'];
-        const firstWord = input.split(' ')[0]?.toLowerCase();
-        
-        return questionWords.includes(firstWord);
-    }
 
     addSuggestions(processed) {
         if (processed.isValid) return;
@@ -157,27 +86,8 @@ class QuestionProcessor {
             processed.suggestions.push('Break this into multiple shorter questions');
         }
 
-        // Suggest better question types
-        if (processed.type === 'general') {
-            processed.suggestions.push('Try starting with: "Where were you...", "What did you see...", or "Who was with you..."');
-        }
     }
 
-    // Get sample questions for help
-    getSampleQuestions() {
-        return [
-            "Where were you between 8:30 and 9:15 PM?",
-            "What did you see in Victoria's office?",
-            "Who was with you during the gallery opening?",
-            "When did you last speak to Victoria?",
-            "How well did you know the victim?",
-            "Why were you in that area of the gallery?",
-            "Can you explain the argument witnesses heard?",
-            "Tell me about your relationship with Victoria.",
-            "Did you notice anything unusual that evening?",
-            "What time did you arrive at the gallery?"
-        ];
-    }
 
     // Format error messages for display
     formatErrors(processed) {
