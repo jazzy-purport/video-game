@@ -59,7 +59,7 @@ window.galleryMurderCharacters = {
           },
           "marcus webb": {
             "witnessedAnger": "Witnessed his explosive anger toward Victoria earlier that evening",
-            "timelinePresence": "Can confirm that marcus webb was present in the gallery from 8:30 onwards"
+            "timelinePresence": "Can confirm that marcus webb was present in the gallery from 8:30 onwards",
             "heardThreat": "Saw him make the threat: 'You'll regret destroying me'",
             "phoneChecking": "Noticed him obsessively checking his phone all evening",
             "desperateBehavior": "Observed his desperate, sweaty behavior throughout the night",
