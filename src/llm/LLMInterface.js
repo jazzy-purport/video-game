@@ -9,22 +9,8 @@ class LLMInterface {
     }
 
     async loadEnvironment() {
-        console.log('LLMInterface.loadEnvironment called');
-        
-        if (window.envLoader && !this.envLoaded) {
-            await window.envLoader.loadEnv();
-            const apiKey = window.envLoader.getOpenAIKey();
-            
-            console.log('API key from environment:', apiKey ? `${apiKey.substring(0, 10)}...` : 'not found');
-            
-            if (apiKey && apiKey !== 'your_openai_api_key_here') {
-                this.apiKey = apiKey;
-                this.apiEndpoint = 'https://api.openai.com/v1/chat/completions';
-                console.log('OpenAI API key loaded from environment');
-            }
-            
-            this.envLoaded = true;
-        }
+        console.log('LLMInterface.loadEnvironment called - using Vercel API, no client-side API key needed');
+        this.envLoaded = true;
     }
 
     configure(config) {
@@ -35,11 +21,7 @@ class LLMInterface {
     }
 
     async sendMessage(prompt, characterContext = {}) {
-        console.log('LLMInterface.sendMessage called, apiKey:', this.apiKey ? 'configured' : 'not configured');
-        
-        if (!this.apiKey) {
-            throw new Error('LLM API key not configured. Use gameEngine.llm.configure({ apiKey: "your-key" })');
-        }
+        console.log('LLMInterface.sendMessage called - using Vercel API');
 
         const messages = [
             {
@@ -52,9 +34,7 @@ class LLMInterface {
             model: this.model,
             messages: messages,
             temperature: characterContext.temperature || 0.7,
-            max_tokens: characterContext.maxTokens || 300,
-            presence_penalty: characterContext.presencePenalty || 0,
-            frequency_penalty: characterContext.frequencyPenalty || 0
+            max_tokens: characterContext.maxTokens || 300
         };
 
         return this.makeRequest(requestBody);
@@ -62,19 +42,25 @@ class LLMInterface {
 
     async makeRequest(requestBody, retryCount = 0) {
         try {
-            console.log('Making OpenAI API request to:', this.apiEndpoint);
+            const vercelApiUrl = '/api/chat';
+            console.log('Making request to Vercel API:', vercelApiUrl);
             console.log('Request body:', JSON.stringify(requestBody, null, 2));
             
-            const response = await fetch(this.apiEndpoint, {
+            const response = await fetch(vercelApiUrl, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${this.apiKey}`
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(requestBody)
             });
 
             if (!response.ok) {
+                // If API route not found (404), fall back to mock for local development
+                if (response.status === 404) {
+                    console.log('Vercel API not available, using mock response for local development');
+                    return this.mockResponse('', {});
+                }
+                
                 const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
                 throw new Error(`LLM API Error (${response.status}): ${errorData.error?.message || errorData.error || 'Unknown error'}`);
             }
@@ -84,6 +70,12 @@ class LLMInterface {
 
         } catch (error) {
             console.error(`LLM request failed (attempt ${retryCount + 1}):`, error);
+
+            // If it's a network error (e.g., API route doesn't exist), fall back to mock
+            if (error.message.includes('fetch') || error.message.includes('Failed to fetch')) {
+                console.log('Network error, falling back to mock response for local development');
+                return this.mockResponse('', {});
+            }
 
             if (retryCount < this.maxRetries) {
                 await this.delay(this.retryDelay * (retryCount + 1));
@@ -160,9 +152,9 @@ class LLMInterface {
     }
 
     isConfigured() {
-        const configured = !!this.apiKey;
-        console.log('LLMInterface.isConfigured:', configured, 'apiKey:', this.apiKey ? `${this.apiKey.substring(0, 10)}...` : 'null');
-        return configured;
+        // Always return true for Vercel deployment - API key is handled server-side
+        console.log('LLMInterface.isConfigured: true (using Vercel API)');
+        return true;
     }
 
     getConfiguration() {
