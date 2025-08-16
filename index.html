@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detective Interrogation Game</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+        }
+        
+        /* Speech bubble animations */
+        @keyframes speechBubbleIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.5) translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        @keyframes speechBubbleOut {
+            0% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.8) translateY(-10px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="src/utils/EnvLoader.js"></script>
+    <script src="src/ui/characters/EmotionController.js"></script>
+    <script src="src/ui/characters/Character.js"></script>
+    <script src="src/ui/characters/CharacterLoader.js"></script>
+    <script src="src/cases/gallery-murder/characters.js"></script>
+    <script src="src/core/StateManager.js"></script>
+    <script src="src/llm/LLMInterface.js"></script>
+    <script src="src/llm/PromptEngine.js"></script>
+    <script src="src/llm/ResponseProcessor.js"></script>
+    <script src="src/llm/QuestionProcessor.js"></script>
+    <script src="src/ui/speech/SpeechBubble3D.js"></script>
+    <script src="src/ui/overlay/IntroOverlay.js"></script>
+    <script src="src/ui/overlay/VictoryOverlay.js"></script>
+    <script src="src/ui/overlay/CharacterSelector.js"></script>
+    <script src="src/ui/overlay/DialogueManager.js"></script>
+    <script src="src/core/GameEngine.js"></script>
+    <script src="src/ui/SceneManager.js"></script>
+</body>
+</html>
